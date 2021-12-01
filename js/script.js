@@ -12,25 +12,36 @@ const linkList = document.querySelector('.link-list');
 /**
  * @param {array} list - Array of student objects
  */
-function addPagination(list) {
-	const numOfPages = Math.ceil(list.length / itemsPerPage);
-	const linkList = document.querySelector('.link-list');
-	linkList.innerHTML = "";
-	for (let i = 1; i <= numOfPages; i++) {
-		const button = `<li>
-    <button type="button">${i}</button>
-    </li>`;
-		linkList.insertAdjacentHTML("beforeend", button);
+ function addPagination(list) {
+ 	const numOfPages = Math.ceil(list.length / itemsPerPage);
+ 	const linkList = document.querySelector('.link-list');
+ 	linkList.innerHTML = "";
+ 	for (let i = 1; i <= numOfPages; i++) {
+ 		const button = `<li>
+     <button type="button">${i}</button>
+     </li>`;
+
+ 		linkList.insertAdjacentHTML("beforeend", button);
+
+		const firstButton = document.querySelector('.link-list button')
+			if(firstButton) {
+				firstButton.className = 'active';
+			}
+    }
+
+     linkList.addEventListener ('click', (e) => {
+			 const targetButton = e.target;
+       if (targetButton.tagName === 'BUTTON') {
+         const previousButton = document.querySelector('.active');
+         previousButton.className = '';
+				 const newButton = e.target;
+				 newButton.className = 'active';
+				 
+         showPage(list, newButton.textContent);
+       };
+     });
    }
-    linkList.addEventListener ('click', (e) => {
-      if (e.target.tagName === 'BUTTON') {
-        const newButton = e.target;
-        const oldButton = document.getElementsByClassName('active');
-        oldButton.className = '';
-        showPage(list, newButton.textContent);
-      };
-    });
-  }
+
 
 /**
  * @param {array} list - Array of student objects
@@ -77,7 +88,11 @@ const searchInput = document.querySelector('.student-search');
 const searchValue = document.querySelector('input');
 const inputButton = document.querySelector('button');
 
-/*event listeners for input search*/
+
+/**
+ * @param {array} list - Array of student objects
+ * @param {string} searchValue.value - Text from input
+ */
 searchInput.addEventListener('keyup', (e) => {
 inputSearch(data, searchValue.value);
 });
@@ -87,10 +102,6 @@ inputButton.addEventListener('click', (e) => {
 	searchValue.value = ''
 });
 
-/**
- * @param {array} list - Array of student objects
- * @param {string} search - Text from input field
- */
 function inputSearch(list, search){
 linkList.innerHTML = "";
 	search = search.toUpperCase();
